@@ -11,6 +11,21 @@ public class Movement : MonoBehaviour {
     private Rigidbody rb; // Stuff we dont want unity to show
     private bool isGrounded;
 
+    void OnCollisionStay() {
+        isGrounded = true;
+    }
+
+    void RestartLevel() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    void OnCollisionEnter(Collision collision) {
+        Debug.Log("Collision Function");
+        if (collision.gameObject.CompareTag("Finish")) { // Name of Colliding Object
+            Debug.Log("Collision Detected");
+        }
+    }
+
     void Start() {
         Debug.Log("Movement.cs Script added to: " + gameObject.name); // Check to make sure we are connected to a game object
         rb = GetComponent<Rigidbody>(); // Check for rigid body on the game object, then store the rigid body from the game object in a variable
@@ -22,18 +37,14 @@ public class Movement : MonoBehaviour {
         Vector3 torque = new Vector3(0f, 0f, -moveHorizontal) * torqueAmount; // 3 Axes Movement, X and Y are 0, but Z is our rotation
         rb.AddTorque(torque); // Add it back to the game object rigid body which we have stored in a variable
 
-        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded) {
+        if (isGrounded && (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow))) {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
         }
 
         if (transform.position.y < restartThreshold) {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            RestartLevel();
         }
 
-    }
-
-    void OnCollisionStay() {
-        isGrounded = true;
     }
 }
