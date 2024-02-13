@@ -20,9 +20,9 @@ public class Movement : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision collision) {
-        Debug.Log("Collision Function");
         if (collision.gameObject.CompareTag("Finish")) { // Name of Colliding Object
-            Debug.Log("Collision Detected");
+            Debug.Log("Collision Detected With " + collision.gameObject);
+            Invoke("RestartLevel", 1f); // Restart Level after a 1 Second Delay
         }
     }
 
