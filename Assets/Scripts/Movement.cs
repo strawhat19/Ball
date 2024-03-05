@@ -10,13 +10,19 @@ public class Movement : MonoBehaviour {
     public float torqueAmount = 1f;
     private Rigidbody rb; // Stuff we dont want unity to show
     private bool isGrounded;
+    public SceneFader sceneFader;
 
     void OnCollisionStay() {
         isGrounded = true;
     }
 
     void RestartLevel() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneFader sceneFader = FindObjectOfType<SceneFader>();
+        if (sceneFader != null) {
+            sceneFader.RestartLevel();
+        } else {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
     void OnCollisionEnter(Collision collision) {
