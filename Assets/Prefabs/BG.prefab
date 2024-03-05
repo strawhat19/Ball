@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3897705300591703336}
+  - component: {fileID: 8070613720778096336}
   - component: {fileID: 471750378964278300}
   - component: {fileID: 2746264408222301464}
   - component: {fileID: 8260701882111699145}
-  - component: {fileID: 8070613720778096336}
   m_Layer: 0
   m_Name: BG
   m_TagString: Untagged
@@ -35,8 +35,21 @@ Transform:
   - {fileID: 2491595458070509170}
   - {fileID: 5220117309524744078}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8070613720778096336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2715419597772736303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dee827136b76e9149b9161876d182a44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToFollow: {fileID: 0}
 --- !u!33 &471750378964278300
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -108,19 +121,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8070613720778096336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2715419597772736303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dee827136b76e9149b9161876d182a44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Character: {fileID: 0}
 --- !u!1 &3795447352428168869
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee827136b76e9149b9161876d182a44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Character: {fileID: 0}
+  objectToFollow: {fileID: 0}
 --- !u!1 &4038241256452966341
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,4 +358,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee827136b76e9149b9161876d182a44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Character: {fileID: 0}
+  objectToFollow: {fileID: 0}

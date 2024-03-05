@@ -3,61 +3,50 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class SceneFader : MonoBehaviour
-{
+public class SceneFader : MonoBehaviour {
     public Image fadeOutUIImage;
     public float fadeSpeed = 0.5f;
 
-    public enum FadeDirection
-    {
+    public enum FadeDirection {
         In, //Alpha = 1
         Out // Alpha = 0
     }
 
-    void Start()
-    {
+    void Start() {
         StartCoroutine(Fade(FadeDirection.Out)); // Fade in at the start
     }
 
-    public IEnumerator Fade(FadeDirection fadeDirection)
-    {
+    public IEnumerator Fade(FadeDirection fadeDirection) {
         float alpha = (fadeDirection == FadeDirection.Out) ? 1 : 0;
         float fadeEndValue = (fadeDirection == FadeDirection.Out) ? 0 : 1;
-        if (fadeDirection == FadeDirection.Out)
-        {
-            while (alpha >= fadeEndValue)
-            {
+
+        if (fadeDirection == FadeDirection.Out) {
+            while (alpha >= fadeEndValue) {
                 SetColorImage(ref alpha, fadeDirection);
                 yield return null;
             }
             fadeOutUIImage.enabled = false;
-        }
-        else
-        {
+        } else {
             fadeOutUIImage.enabled = true;
-            while (alpha <= fadeEndValue)
-            {
+            while (alpha <= fadeEndValue) {
                 SetColorImage(ref alpha, fadeDirection);
                 yield return null;
             }
         }
     }
 
-    private void SetColorImage(ref float alpha, FadeDirection fadeDirection)
-    {
+    private void SetColorImage(ref float alpha, FadeDirection fadeDirection) {
         fadeOutUIImage.color = new Color(fadeOutUIImage.color.r, fadeOutUIImage.color.g, fadeOutUIImage.color.b, alpha);
         alpha += Time.deltaTime * (1.0f / fadeSpeed) * ((fadeDirection == FadeDirection.Out) ? -1 : 1);
     }
 
-    public IEnumerator FadeAndLoadScene(FadeDirection fadeDirection, int sceneToLoad)
-    {
+    public IEnumerator FadeAndLoadScene(FadeDirection fadeDirection, int sceneToLoad) {
         yield return Fade(fadeDirection);
         SceneManager.LoadScene(sceneToLoad);
     }
 
     // Wrapper method for external calls
-    public void RestartLevel()
-    {
+    public void RestartLevel() {
         StartCoroutine(FadeAndLoadScene(FadeDirection.In, SceneManager.GetActiveScene().buildIndex));
     }
 }
