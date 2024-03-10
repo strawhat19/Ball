@@ -51,9 +51,11 @@ public class SceneFader : MonoBehaviour {
         StartCoroutine(FadeAndLoadScene(FadeDirection.In, currentSceneIndex));
     }
 
-    public void GoToLevel(int x) {
-        // int nextSceneIndex = SceneManager.LoadScene(x);
-        // int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        StartCoroutine(FadeAndLoadScene(FadeDirection.In, x));
+    public void GoToLevel() {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextSceneIndex = currentSceneIndex + 1;
+        bool levelNotInBuildSettings = nextSceneIndex >= SceneManager.sceneCountInBuildSettings;
+        if (levelNotInBuildSettings) nextSceneIndex = currentSceneIndex;
+        StartCoroutine(FadeAndLoadScene(FadeDirection.In, nextSceneIndex));
     }
 }

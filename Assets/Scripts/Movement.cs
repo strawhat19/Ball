@@ -18,11 +18,9 @@ public class Movement : MonoBehaviour {
 
     void GoToLevel() {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        int nextSceneIndex = currentSceneIndex + 1;
-        nextSceneIndex = nextSceneIndex >= SceneManager.sceneCountInBuildSettings ? 0 : currentSceneIndex + 1;
         SceneFader sceneFader = FindObjectOfType<SceneFader>();
         if (sceneFader != null) {
-            sceneFader.GoToLevel(nextSceneIndex);
+            sceneFader.GoToLevel();
         } else {
             SceneManager.LoadScene(currentSceneIndex);
         }
