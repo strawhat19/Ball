@@ -16,20 +16,38 @@ public class Movement : MonoBehaviour {
         isGrounded = true;
     }
 
+    void GoToLevel() {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextSceneIndex = currentSceneIndex + 1;
+        nextSceneIndex = nextSceneIndex >= SceneManager.sceneCountInBuildSettings ? 0 : currentSceneIndex + 1;
+        SceneFader sceneFader = FindObjectOfType<SceneFader>();
+        if (sceneFader != null) {
+            sceneFader.GoToLevel(nextSceneIndex);
+        } else {
+            SceneManager.LoadScene(currentSceneIndex);
+        }
+    }
+
     void RestartLevel() {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneFader sceneFader = FindObjectOfType<SceneFader>();
         if (sceneFader != null) {
             sceneFader.RestartLevel();
         } else {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene(currentSceneIndex);
+        }
+    }
+
+    void ReachesFinishLine(Collision collision) {
+        bool reachesFinishLine = collision.gameObject.CompareTag("Finish");
+        if (reachesFinishLine) { // Name of Colliding Object
+            Debug.Log("Collision Detected With " + collision.gameObject);
+            Invoke("GoToLevel", 1f); // Restart Level after a 1 Second Delay
         }
     }
 
     void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.CompareTag("Finish")) { // Name of Colliding Object
-            Debug.Log("Collision Detected With " + collision.gameObject);
-            Invoke("RestartLevel", 1f); // Restart Level after a 1 Second Delay
-        }
+        ReachesFinishLine(collision);
     }
 
     void Start() {

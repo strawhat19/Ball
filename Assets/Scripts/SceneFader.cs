@@ -47,6 +47,13 @@ public class SceneFader : MonoBehaviour {
 
     // Wrapper method for external calls
     public void RestartLevel() {
-        StartCoroutine(FadeAndLoadScene(FadeDirection.In, SceneManager.GetActiveScene().buildIndex));
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        StartCoroutine(FadeAndLoadScene(FadeDirection.In, currentSceneIndex));
+    }
+
+    public void GoToLevel(int x) {
+        // int nextSceneIndex = SceneManager.LoadScene(x);
+        // int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        StartCoroutine(FadeAndLoadScene(FadeDirection.In, x));
     }
 }
