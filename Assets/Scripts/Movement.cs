@@ -11,6 +11,7 @@ public class Movement : MonoBehaviour {
     private Rigidbody rb; // Stuff we dont want unity to show
     private bool isGrounded;
     public SceneFader sceneFader;
+    private Health playerHealth;
 
     void OnCollisionStay() {
         isGrounded = true;
@@ -36,21 +37,27 @@ public class Movement : MonoBehaviour {
         }
     }
 
-    void ReachesFinishLine(Collision collision) {
+    void OnCollisionEnter(Collision collision) {
+        bool hitByEnemy = collision.gameObject.CompareTag("Enemy");
         bool reachesFinishLine = collision.gameObject.CompareTag("Finish");
-        if (reachesFinishLine) { // Name of Colliding Object
-            Debug.Log("Collision Detected With " + collision.gameObject);
+
+        if (hitByEnemy) {
+            // Debug.Log("Collision Detected With " + collision.gameObject);
+            float damage = Random.Range(5.0f, 15.0f);
+            playerHealth.TakeDamage(damage);
+        }
+
+        if (reachesFinishLine) {
+            // Debug.Log("Collision Detected With " + collision.gameObject);
             Invoke("GoToLevel", 1f); // Restart Level after a 1 Second Delay
         }
     }
 
-    void OnCollisionEnter(Collision collision) {
-        ReachesFinishLine(collision);
-    }
-
     void Start() {
-        Debug.Log("Movement.cs Script added to: " + gameObject.name); // Check to make sure we are connected to a game object
+        // Debug.Log("Movement.cs Script added to: " + gameObject.name); // Check to make sure we are connected to a game object
         rb = GetComponent<Rigidbody>(); // Check for rigid body on the game object, then store the rigid body from the game object in a variable
+        GameObject health = GameObject.FindGameObjectWithTag("Health");
+        if (health != null) playerHealth = health.GetComponent<Health>();
     }
 
     void Update() {

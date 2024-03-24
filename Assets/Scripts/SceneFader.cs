@@ -5,7 +5,7 @@ using System.Collections;
 
 public class SceneFader : MonoBehaviour {
     public Image fadeOutUIImage;
-    public float fadeSpeed = 0.5f;
+    public float fadeSpeed = 0.3f;
 
     public enum FadeDirection {
         In, //Alpha = 1
