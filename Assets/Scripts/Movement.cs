@@ -12,9 +12,26 @@ public class Movement : MonoBehaviour {
     private bool isGrounded;
     public SceneFader sceneFader;
     private Health playerHealth;
+    public float damageMinimum = 5.0f;
+    public float damageMaximum = 35.0f;
+    private Deaths playerDeaths;
+    private bool isRestarting = false;
 
     void OnCollisionStay() {
         isGrounded = true;
+    }
+
+    void GameOverAnimation() {
+        RestartLevel();
+    }
+
+    void Start() {
+        // Debug.Log("Movement.cs Script added to: " + gameObject.name); // Check to make sure we are connected to a game object
+        rb = GetComponent<Rigidbody>(); // Check for rigid body on the game object, then store the rigid body from the game object in a variable
+        GameObject health = GameObject.FindGameObjectWithTag("Health");
+        if (health != null) playerHealth = health.GetComponent<Health>();
+        GameObject deaths = GameObject.FindGameObjectWithTag("Deaths");
+        if (deaths != null) playerDeaths = deaths.GetComponent<Deaths>();
     }
 
     void GoToLevel() {
@@ -28,12 +45,16 @@ public class Movement : MonoBehaviour {
     }
 
     void RestartLevel() {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneFader sceneFader = FindObjectOfType<SceneFader>();
-        if (sceneFader != null) {
-            sceneFader.RestartLevel();
-        } else {
-            SceneManager.LoadScene(currentSceneIndex);
+        if (!isRestarting) {
+            isRestarting = true;
+            playerDeaths.AddDeath();
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneFader sceneFader = FindObjectOfType<SceneFader>();
+            if (sceneFader != null) {
+                sceneFader.RestartLevel();
+            } else {
+                SceneManager.LoadScene(currentSceneIndex);
+            }
         }
     }
 
@@ -43,7 +64,7 @@ public class Movement : MonoBehaviour {
 
         if (hitByEnemy) {
             // Debug.Log("Collision Detected With " + collision.gameObject);
-            float damage = Random.Range(5.0f, 15.0f);
+            float damage = Random.Range(damageMinimum, damageMaximum);
             playerHealth.TakeDamage(damage);
         }
 
@@ -51,13 +72,6 @@ public class Movement : MonoBehaviour {
             // Debug.Log("Collision Detected With " + collision.gameObject);
             Invoke("GoToLevel", 1f); // Restart Level after a 1 Second Delay
         }
-    }
-
-    void Start() {
-        // Debug.Log("Movement.cs Script added to: " + gameObject.name); // Check to make sure we are connected to a game object
-        rb = GetComponent<Rigidbody>(); // Check for rigid body on the game object, then store the rigid body from the game object in a variable
-        GameObject health = GameObject.FindGameObjectWithTag("Health");
-        if (health != null) playerHealth = health.GetComponent<Health>();
     }
 
     void Update() {
@@ -72,7 +86,9 @@ public class Movement : MonoBehaviour {
         }
 
         if (transform.position.y < restartThreshold) {
-            RestartLevel();
+            GameOverAnimation();
+        } else if (playerHealth.currentHealth <= 0) {
+            Invoke("GameOverAnimation", 1f);
         }
 
     }

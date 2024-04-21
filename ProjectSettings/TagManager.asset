@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Health
   - HealthBar
+  - Deaths
+  - DeathsText
   layers:
   - Default
   - TransparentFX
