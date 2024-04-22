@@ -340,10 +340,13 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.4f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.4f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scripts/CameraFollow.cs"
+"Assets/Scripts/ColorChange.cs"
+"Assets/Scripts/Deaths.cs"
 "Assets/Scripts/Health.cs"
 "Assets/Scripts/Movement.cs"
 "Assets/Scripts/SceneFader.cs"
 "Assets/Scripts/SimpleMovement.cs"
+"Assets/Scripts/Spawner.cs"
 -langversion:9.0
 
 /deterministic

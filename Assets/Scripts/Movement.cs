@@ -75,7 +75,6 @@ public class Movement : MonoBehaviour {
     }
 
     void Update() {
-
         float moveHorizontal = Input.GetAxis("Horizontal"); // When user clicks A or D // Left Arrow or Right Arrow
         Vector3 torque = new Vector3(0f, 0f, -moveHorizontal) * torqueAmount; // 3 Axes Movement, X and Y are 0, but Z is our rotation
         rb.AddTorque(torque); // Add it back to the game object rigid body which we have stored in a variable
@@ -90,6 +89,5 @@ public class Movement : MonoBehaviour {
         } else if (playerHealth.currentHealth <= 0) {
             Invoke("GameOverAnimation", 1f);
         }
-
     }
 }

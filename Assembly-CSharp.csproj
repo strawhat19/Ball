@@ -43,6 +43,8 @@
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\Deaths.cs" />
      <Compile Include="Assets\Scripts\Health.cs" />
+     <Compile Include="Assets\Scripts\Spawner.cs" />
+     <Compile Include="Assets\Scripts\ColorChange.cs" />
      <Compile Include="Assets\Scripts\SceneFader.cs" />
      <Compile Include="Assets\Scripts\SimpleMovement.cs" />
      <Compile Include="Assets\Scripts\Movement.cs" />

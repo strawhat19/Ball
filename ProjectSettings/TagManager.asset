@@ -9,6 +9,7 @@ TagManager:
   - HealthBar
   - Deaths
   - DeathsText
+  - Character
   layers:
   - Default
   - TransparentFX
