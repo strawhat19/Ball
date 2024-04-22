@@ -14,10 +14,13 @@ public class DamageTracker : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        damageText.text = $"Damage: {damage}";
+        damageText.text = $"Damage: {damage}%";
     }
 
     public void AddDamage(float damageToAdd) {
-        damage += damageToAdd;
+        float newDmg = damage + damageToAdd;
+        if (newDmg > damage) {
+            damage += damageToAdd;
+        }
     }
 }
