@@ -10,12 +10,15 @@ public class Movement : MonoBehaviour {
     public float torqueAmount = 1f;
     private Rigidbody rb; // Stuff we dont want unity to show
     private bool isGrounded;
+    private bool isColliding = false;
     public SceneFader sceneFader;
     private Health playerHealth;
     public float damageMinimum = 5.0f;
     public float damageMaximum = 35.0f;
     private Deaths playerDeaths;
     private bool isRestarting = false;
+    private ParticleSystem healParticles;
+    private ParticleSystem damageParticles;
 
     void OnCollisionStay() {
         isGrounded = true;
@@ -25,13 +28,30 @@ public class Movement : MonoBehaviour {
         RestartLevel();
     }
 
+    void StopHealAnimation() {
+        healParticles.Stop();
+    }
+    
+    void StopDamageAnimation() {
+        damageParticles.Stop();
+    }
+
     void Start() {
         // Debug.Log("Movement.cs Script added to: " + gameObject.name); // Check to make sure we are connected to a game object
         rb = GetComponent<Rigidbody>(); // Check for rigid body on the game object, then store the rigid body from the game object in a variable
         GameObject health = GameObject.FindGameObjectWithTag("Health");
         if (health != null) playerHealth = health.GetComponent<Health>();
+
         GameObject deaths = GameObject.FindGameObjectWithTag("Deaths");
         if (deaths != null) playerDeaths = deaths.GetComponent<Deaths>();
+
+        GameObject healing = GameObject.FindGameObjectWithTag("Healing");
+        if (healing != null) healParticles = healing.GetComponent<ParticleSystem>();
+        if (healParticles != null) StopHealAnimation();
+        
+        GameObject damage = GameObject.FindGameObjectWithTag("Damage");
+        if (damage != null) damageParticles = damage.GetComponent<ParticleSystem>();
+        if (damageParticles != null) StopDamageAnimation();
     }
 
     void GoToLevel() {
@@ -58,19 +78,51 @@ public class Movement : MonoBehaviour {
         }
     }
 
+    private void OnTriggerEnter(Collider trigger) {
+        if (trigger.CompareTag("Enemy")) {
+            Debug.Log("Narrowly dodged an enemy!");
+            if (!isColliding && healParticles != null && playerHealth.currentHealth < 100) {
+                healParticles.Play(); // Play healing animation
+                float hpToHeal = Random.Range(damageMinimum, damageMaximum);
+                playerHealth.HealDamage(hpToHeal);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider trigger) {
+        if (trigger.CompareTag("Enemy")) {
+            if (healParticles != null) {
+                Invoke("StopHealAnimation", 0.25f); // Stop the healing animation shortly after exiting the trigger
+            }
+        }
+    }
+
     void OnCollisionEnter(Collision collision) {
         bool hitByEnemy = collision.gameObject.CompareTag("Enemy");
         bool reachesFinishLine = collision.gameObject.CompareTag("Finish");
 
         if (hitByEnemy) {
+            isColliding = true;
             // Debug.Log("Collision Detected With " + collision.gameObject);
             float damage = Random.Range(damageMinimum, damageMaximum);
             playerHealth.TakeDamage(damage);
+            // healParticles.Play();
+            damageParticles.Play();
         }
 
         if (reachesFinishLine) {
             // Debug.Log("Collision Detected With " + collision.gameObject);
             Invoke("GoToLevel", 1f); // Restart Level after a 1 Second Delay
+        }
+    }
+
+    void OnCollisionExit(Collision collision) {
+        bool hitByEnemy = collision.gameObject.CompareTag("Enemy");
+        if (hitByEnemy) {
+            // Debug.Log("Collision Detected With " + collision.gameObject);
+            // Invoke("StopHealAnimation", 0.2f);
+            Invoke("StopDamageAnimation", 0.2f);
+            isColliding = false;
         }
     }
 

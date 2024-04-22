@@ -10,6 +10,8 @@ TagManager:
   - Deaths
   - DeathsText
   - Character
+  - Healing
+  - Damage
   layers:
   - Default
   - TransparentFX

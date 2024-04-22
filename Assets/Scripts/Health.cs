@@ -14,6 +14,12 @@ public class Health : MonoBehaviour {
         currentHealth = maxHealth;
     }
 
+    public void HealDamage(float healing) {
+        currentHealth += healing;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        StartCoroutine(SmoothTransitionToNewHealth());
+    }
+
     public void TakeDamage(float damage) {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);

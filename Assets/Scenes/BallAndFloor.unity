@@ -1218,6 +1218,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 718511232}
     m_Modifications:
+    - target: {fileID: 819217289973017485, guid: 463228f57a5846c4d99ec3d1f0682c81,
+        type: 3}
+      propertyPath: spawnInterval
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3060921512140531235, guid: 463228f57a5846c4d99ec3d1f0682c81,
         type: 3}
       propertyPath: m_Name
@@ -1226,12 +1231,12 @@ PrefabInstance:
     - target: {fileID: 3500630542718149113, guid: 463228f57a5846c4d99ec3d1f0682c81,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.13
+      value: 5.35
       objectReference: {fileID: 0}
     - target: {fileID: 3500630542718149113, guid: 463228f57a5846c4d99ec3d1f0682c81,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.164
+      value: 1.16
       objectReference: {fileID: 0}
     - target: {fileID: 3500630542718149113, guid: 463228f57a5846c4d99ec3d1f0682c81,
         type: 3}
