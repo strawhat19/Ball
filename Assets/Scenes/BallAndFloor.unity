@@ -1331,6 +1331,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerHUD
       objectReference: {fileID: 0}
+    - target: {fileID: 6942499164796533821, guid: 4f2fdae62e3c8bd4884610cc06e779b3,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7150774366049925564, guid: 4f2fdae62e3c8bd4884610cc06e779b3,
         type: 3}
       propertyPath: m_RootOrder

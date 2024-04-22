@@ -9,21 +9,29 @@ public class Health : MonoBehaviour {
     public float currentHealth = 100.0f;
     public TextMeshProUGUI healthText;
     public RectTransform healthBarRect;
+    private DamageTracker playerDamage;
+    private HealingTracker playerHealing;
 
     void Start() {
         currentHealth = maxHealth;
+
+        GameObject damageTracker = GameObject.FindGameObjectWithTag("DamageTracker");
+        if (damageTracker != null) playerDamage = damageTracker.GetComponent<DamageTracker>();
+
+        GameObject healingTracker = GameObject.FindGameObjectWithTag("HealingTracker");
+        if (healingTracker != null) playerHealing = healingTracker.GetComponent<HealingTracker>();
     }
 
     public void HealDamage(float healing) {
         currentHealth += healing;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        StartCoroutine(SmoothTransitionToNewHealth());
+        StartCoroutine(SmoothTransitionToNewHealth(false));
     }
 
     public void TakeDamage(float damage) {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        StartCoroutine(SmoothTransitionToNewHealth());
+        StartCoroutine(SmoothTransitionToNewHealth(true));
     }
 
     void Update() {
@@ -33,7 +41,7 @@ public class Health : MonoBehaviour {
         // }
     }
 
-    IEnumerator SmoothTransitionToNewHealth() {
+    IEnumerator SmoothTransitionToNewHealth(bool damage) {
         float timeToChange = 0.5f; // The duration of the change
         float elapsed = 0f;
         
@@ -45,6 +53,13 @@ public class Health : MonoBehaviour {
             float newWidth = Mathf.Lerp(currentWidth, targetWidth, elapsed / timeToChange);
             healthBarRect.sizeDelta = new Vector2(newWidth, healthBarRect.sizeDelta.y);
             healthText.text = $"Health: {newWidth}%";
+            if (damage) {
+                float damageToAdd = (float)(currentWidth - newWidth) / 100;
+                playerDamage.AddDamage(damageToAdd);
+            } else {
+                float healingToAdd = (float)(newWidth - currentWidth) / 100;
+                playerHealing.AddHealing(healingToAdd);
+            }
             yield return null;
         }
         

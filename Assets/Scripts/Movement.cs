@@ -19,6 +19,7 @@ public class Movement : MonoBehaviour {
     private bool isRestarting = false;
     private ParticleSystem healParticles;
     private ParticleSystem damageParticles;
+    private ParticleSystem AOECircle;
 
     void OnCollisionStay() {
         isGrounded = true;
@@ -37,8 +38,7 @@ public class Movement : MonoBehaviour {
     }
 
     void Start() {
-        // Debug.Log("Movement.cs Script added to: " + gameObject.name); // Check to make sure we are connected to a game object
-        rb = GetComponent<Rigidbody>(); // Check for rigid body on the game object, then store the rigid body from the game object in a variable
+        rb = GetComponent<Rigidbody>();
         GameObject health = GameObject.FindGameObjectWithTag("Health");
         if (health != null) playerHealth = health.GetComponent<Health>();
 
@@ -52,6 +52,9 @@ public class Movement : MonoBehaviour {
         GameObject damage = GameObject.FindGameObjectWithTag("Damage");
         if (damage != null) damageParticles = damage.GetComponent<ParticleSystem>();
         if (damageParticles != null) StopDamageAnimation();
+        
+        GameObject aoe = GameObject.FindGameObjectWithTag("AOE");
+        if (aoe != null) AOECircle = aoe.GetComponent<ParticleSystem>();
     }
 
     void GoToLevel() {
@@ -80,10 +83,9 @@ public class Movement : MonoBehaviour {
 
     private void OnTriggerEnter(Collider trigger) {
         if (trigger.CompareTag("Enemy")) {
-            Debug.Log("Narrowly dodged an enemy!");
             if (!isColliding && healParticles != null && playerHealth.currentHealth < 100) {
                 healParticles.Play(); // Play healing animation
-                float hpToHeal = Random.Range(damageMinimum, damageMaximum);
+                float hpToHeal = Random.Range((damageMinimum / 2), (damageMaximum / 2));
                 playerHealth.HealDamage(hpToHeal);
             }
         }
@@ -103,15 +105,12 @@ public class Movement : MonoBehaviour {
 
         if (hitByEnemy) {
             isColliding = true;
-            // Debug.Log("Collision Detected With " + collision.gameObject);
             float damage = Random.Range(damageMinimum, damageMaximum);
             playerHealth.TakeDamage(damage);
-            // healParticles.Play();
             damageParticles.Play();
         }
 
         if (reachesFinishLine) {
-            // Debug.Log("Collision Detected With " + collision.gameObject);
             Invoke("GoToLevel", 1f); // Restart Level after a 1 Second Delay
         }
     }
@@ -119,8 +118,6 @@ public class Movement : MonoBehaviour {
     void OnCollisionExit(Collision collision) {
         bool hitByEnemy = collision.gameObject.CompareTag("Enemy");
         if (hitByEnemy) {
-            // Debug.Log("Collision Detected With " + collision.gameObject);
-            // Invoke("StopHealAnimation", 0.2f);
             Invoke("StopDamageAnimation", 0.2f);
             isColliding = false;
         }
