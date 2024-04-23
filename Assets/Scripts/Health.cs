@@ -22,6 +22,13 @@ public class Health : MonoBehaviour {
         if (healingTracker != null) playerHealing = healingTracker.GetComponent<HealingTracker>();
     }
 
+    public void SimulateDamage() {
+        if (Input.GetKeyDown(KeyCode.Space)) { // Press Space to simulate taking damage
+            Debug.Log("Taking Damage");
+            TakeDamage(10);
+        }
+    }
+
     public void HealDamage(float healing) {
         currentHealth += healing;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
@@ -35,10 +42,7 @@ public class Health : MonoBehaviour {
     }
 
     void Update() {
-        // if (Input.GetKeyDown(KeyCode.Space)) { // Press Space to simulate taking damage
-        //     Debug.Log("Taking Damage");
-        //     TakeDamage(10);
-        // }
+        // SimulateDamage();
     }
 
     IEnumerator SmoothTransitionToNewHealth(bool damage) {
@@ -52,7 +56,7 @@ public class Health : MonoBehaviour {
             elapsed += Time.deltaTime;
             float newWidth = Mathf.Lerp(currentWidth, targetWidth, elapsed / timeToChange);
             healthBarRect.sizeDelta = new Vector2(newWidth, healthBarRect.sizeDelta.y);
-            healthText.text = $"Health: {newWidth}%";
+            healthText.text = $"Health: {newWidth:F2}%";
             if (damage) {
                 float damageToAdd = (float)(currentWidth - newWidth) / 100;
                 playerDamage.AddDamage(damageToAdd);
