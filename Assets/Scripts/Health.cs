@@ -32,42 +32,75 @@ public class Health : MonoBehaviour {
     public void HealDamage(float healing) {
         currentHealth += healing;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        StartCoroutine(SmoothTransitionToNewHealth(false));
+        StartCoroutine(SmoothTransitionToNewHealth(currentHealth + healing, false));
     }
 
     public void TakeDamage(float damage) {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        StartCoroutine(SmoothTransitionToNewHealth(true));
+        StartCoroutine(SmoothTransitionToNewHealth(currentHealth - damage, true));
     }
 
-    void Update() {
+    // void Update() {
         // SimulateDamage();
-    }
+    // }
 
-    IEnumerator SmoothTransitionToNewHealth(bool damage) {
+    // IEnumerator SmoothTransitionToNewHealth(bool damage) {
+    //     float timeToChange = 0.5f; // The duration of the change
+    //     float elapsed = 0f;
+        
+    //     float currentWidth = healthBarRect.sizeDelta.x;
+    //     float targetWidth = (float)currentHealth / maxHealth * 100; // Calculate new width based on current health
+        
+    //     while (elapsed < timeToChange) {
+    //         elapsed += Time.deltaTime;
+    //         float newWidth = Mathf.Lerp(currentWidth, targetWidth, elapsed / timeToChange);
+    //         healthBarRect.sizeDelta = new Vector2(newWidth, healthBarRect.sizeDelta.y);
+    //         string updatedHealth = GlobalData.RemoveDotZeroZero(newWidth.ToString("F2"));
+    //         healthText.text = $"Health: {updatedHealth}%";
+    //         if (damage) {
+    //             float damageToAdd = (float)(currentWidth - targetWidth) / 100;
+    //             playerDamage.AddDamage(damageToAdd);
+    //         } else {
+    //             float healingToAdd = (float)(targetWidth - currentWidth) / 100;
+    //             playerHealing.AddHealing(healingToAdd);
+    //         }
+    //         yield return null;
+    //     }
+        
+    //     // Ensure the final width is exactly what it should be after the transition
+    //     healthBarRect.sizeDelta = new Vector2(targetWidth, healthBarRect.sizeDelta.y);
+    // }
+
+    IEnumerator SmoothTransitionToNewHealth(float newHealth, bool damage) {
         float timeToChange = 0.5f; // The duration of the change
         float elapsed = 0f;
         
         float currentWidth = healthBarRect.sizeDelta.x;
-        float targetWidth = (float)currentHealth / maxHealth * 100; // Calculate new width based on current health
-        
+        float newWidth = (float)newHealth / maxHealth * 100; // Calculate new width based on new health
+        float initialHealthPercentage = (float)currentHealth / maxHealth * 100;
+
+        // Calculate total damage or healing
+        float totalChange = newWidth - initialHealthPercentage;
+
         while (elapsed < timeToChange) {
             elapsed += Time.deltaTime;
-            float newWidth = Mathf.Lerp(currentWidth, targetWidth, elapsed / timeToChange);
-            healthBarRect.sizeDelta = new Vector2(newWidth, healthBarRect.sizeDelta.y);
-            healthText.text = $"Health: {newWidth:F2}%";
-            if (damage) {
-                float damageToAdd = (float)(currentWidth - newWidth) / 100;
-                playerDamage.AddDamage(damageToAdd);
-            } else {
-                float healingToAdd = (float)(newWidth - currentWidth) / 100;
-                playerHealing.AddHealing(healingToAdd);
-            }
+            float interpolatedWidth = Mathf.Lerp(currentWidth, newWidth, elapsed / timeToChange);
+            healthBarRect.sizeDelta = new Vector2(interpolatedWidth, healthBarRect.sizeDelta.y);
+            string updatedHealth = GlobalData.RemoveDotZeroZero(interpolatedWidth.ToString("F2"));
+            healthText.text = $"Health: {updatedHealth}%";
             yield return null;
         }
         
-        // Ensure the final width is exactly what it should be after the transition
-        healthBarRect.sizeDelta = new Vector2(targetWidth, healthBarRect.sizeDelta.y);
+        // Ensure the final width and internal health are exactly what they should be after the transition
+        healthBarRect.sizeDelta = new Vector2(newWidth, healthBarRect.sizeDelta.y);
+        currentHealth = newHealth; // Ensure the internal health state is updated
+
+        // Apply the total change after the animation completes
+        if (damage) {
+            playerDamage.AddDamage(-totalChange / 100); // Assuming totalChange is negative for damage
+        } else {
+            playerHealing.AddHealing(totalChange / 100); // Assuming totalChange is positive for healing
+        }
     }
 }

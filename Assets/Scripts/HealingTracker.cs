@@ -13,7 +13,8 @@ public class HealingTracker : MonoBehaviour {
     }
 
     void Update() {
-        healingText.text = $"Healing: {healing:F2}%";
+        string updatedHealing = GlobalData.RemoveDotZeroZero(healing.ToString("F2"));
+        healingText.text = $"Healing: {updatedHealing}%";
     }
 
     public void AddHealing(float healingToAdd) {

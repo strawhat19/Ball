@@ -13,7 +13,8 @@ public class DamageTracker : MonoBehaviour {
     }
 
     void Update() {
-        damageText.text = $"Damage: {damage:F2}%";
+        string updatedDamage = GlobalData.RemoveDotZeroZero(damage.ToString("F2"));
+        damageText.text = $"Damage: {updatedDamage}%";
     }
 
     public void AddDamage(float damageToAdd) {

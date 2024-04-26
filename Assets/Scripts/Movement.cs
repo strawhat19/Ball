@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Movement : MonoBehaviour {
 
+    public bool godMode = false;
     public float jumpForce = 5f; // Stuff we want unity to show
     public float restartThreshold = -5f;
     public float torqueAmount = 1f;
@@ -14,12 +15,23 @@ public class Movement : MonoBehaviour {
     public SceneFader sceneFader;
     private Health playerHealth;
     public float damageMinimum = 5.0f;
-    public float damageMaximum = 35.0f;
+    public float damageMaximum = 15.0f;
     private Deaths playerDeaths;
+    private DifficultyTracker difficultyTracker;
     private bool isRestarting = false;
     private ParticleSystem healParticles;
     private ParticleSystem damageParticles;
     private ParticleSystem AOECircle;
+    public float spawnDelayDuration = -0.75f;
+    public Difficulties difficulty = Difficulties.Easy;
+    public static readonly string SpawnDelay = "SpawnDelay";
+    public static readonly string DamageMultiplier = "DamageMultiplier";
+
+    public Dictionary<Difficulties, Dictionary<string, float>> GameModes = new Dictionary<Difficulties, Dictionary<string, float>> {
+        { Difficulties.Easy, new Dictionary<string, float> { { DamageMultiplier, 1.0f }, { SpawnDelay, 1.25f } } },
+        { Difficulties.Medium, new Dictionary<string, float> { { DamageMultiplier, 1.5f }, { SpawnDelay, 0.75f } } },
+        { Difficulties.Hard, new Dictionary<string, float> { { DamageMultiplier, 2.0f }, { SpawnDelay, 0.0f } } },
+    };
 
     void OnCollisionStay() {
         isGrounded = true;
@@ -37,8 +49,16 @@ public class Movement : MonoBehaviour {
         damageParticles.Stop();
     }
 
+    void LogParameters() {
+        Debug.Log("Difficulty " + difficulty);
+        Debug.Log(SpawnDelay + " " + spawnDelayDuration);
+        Debug.Log(DamageMultiplier + " " + GameModes[difficulty][DamageMultiplier]);
+    }
+
     void Start() {
         rb = GetComponent<Rigidbody>();
+        spawnDelayDuration = GameModes[difficulty][SpawnDelay];
+
         GameObject health = GameObject.FindGameObjectWithTag("Health");
         if (health != null) playerHealth = health.GetComponent<Health>();
 
@@ -53,6 +73,10 @@ public class Movement : MonoBehaviour {
         if (damage != null) damageParticles = damage.GetComponent<ParticleSystem>();
         if (damageParticles != null) StopDamageAnimation();
         
+        GameObject difficultyObject = GameObject.FindGameObjectWithTag("DifficultyTracker");
+        if (difficultyObject != null) difficultyTracker = difficultyObject.GetComponent<DifficultyTracker>();
+        if (difficultyTracker != null) difficultyTracker.SetDifficulty(difficulty);
+
         GameObject aoe = GameObject.FindGameObjectWithTag("AOE");
         if (aoe != null) AOECircle = aoe.GetComponent<ParticleSystem>();
     }
@@ -83,9 +107,18 @@ public class Movement : MonoBehaviour {
 
     private void OnTriggerEnter(Collider trigger) {
         if (trigger.CompareTag("Enemy")) {
-            if (!isColliding && healParticles != null && playerHealth.currentHealth < 100) {
+            bool hitting_spikes = trigger.bounds.size.magnitude < 5;
+            bool player_can_heal = !isColliding && healParticles != null && playerHealth.currentHealth < 100;
+            if (hitting_spikes) {
+                isColliding = true;
+                damageParticles.Play();
+                if (godMode == false) {
+                    float damage = (Random.Range(damageMinimum, damageMaximum) * GameModes[difficulty][DamageMultiplier]) / 2;
+                    playerHealth.TakeDamage(damage);
+                }
+            } else if (player_can_heal && !hitting_spikes) {
                 healParticles.Play(); // Play healing animation
-                float hpToHeal = Random.Range((damageMinimum / 2), (damageMaximum / 2));
+                float hpToHeal = (Random.Range((damageMinimum / 2), (damageMaximum / 2)) * GameModes[difficulty][DamageMultiplier]);
                 playerHealth.HealDamage(hpToHeal);
             }
         }
@@ -93,9 +126,14 @@ public class Movement : MonoBehaviour {
 
     private void OnTriggerExit(Collider trigger) {
         if (trigger.CompareTag("Enemy")) {
+            bool hitting_spikes = trigger.bounds.size.magnitude < 5;
             if (healParticles != null) {
                 Invoke("StopHealAnimation", 0.25f); // Stop the healing animation shortly after exiting the trigger
             }
+            // if (hitting_spikes) {
+            //     Invoke("StopDamageAnimation", 0.2f);
+            //     isColliding = false;
+            // }
         }
     }
 
@@ -105,9 +143,11 @@ public class Movement : MonoBehaviour {
 
         if (hitByEnemy) {
             isColliding = true;
-            float damage = Random.Range(damageMinimum, damageMaximum);
-            playerHealth.TakeDamage(damage);
             damageParticles.Play();
+            if (godMode == false) {
+                float damage = Random.Range(damageMinimum, damageMaximum) * GameModes[difficulty][DamageMultiplier];
+                playerHealth.TakeDamage(damage);
+            }
         }
 
         if (reachesFinishLine) {
@@ -117,10 +157,16 @@ public class Movement : MonoBehaviour {
 
     void OnCollisionExit(Collision collision) {
         bool hitByEnemy = collision.gameObject.CompareTag("Enemy");
-        if (hitByEnemy) {
-            Invoke("StopDamageAnimation", 0.2f);
-            isColliding = false;
-        }
+        // if (hitByEnemy) {
+        //     Invoke("StopDamageAnimation", 0.2f);
+        //     isColliding = false;
+        // }
+    }
+
+    void TakeDelayedDamageOverTime() {
+        float damage = Random.Range(damageMinimum, damageMaximum) * GameModes[difficulty][DamageMultiplier];
+        playerHealth.TakeDamage(damage / 15000);
+        Debug.Log("Taking Damage " + playerHealth.currentHealth + "%");
     }
 
     void Update() {
@@ -138,5 +184,9 @@ public class Movement : MonoBehaviour {
         } else if (playerHealth.currentHealth <= 0) {
             Invoke("GameOverAnimation", 1f);
         }
+
+        // if (damageParticles.isPlaying) {
+        //     TakeDelayedDamageOverTime();
+        // }
     }
 }

@@ -12,6 +12,17 @@ TagManager:
   - Character
   - Healing
   - Damage
+  - AOE
+  - DamageText
+  - DamageTracker
+  - HealingTracker
+  - HealingText
+  - enemy
+  - EnemiesTracker
+  - EnemiesTrackerText
+  - DifficultyTracker
+  - DifficultyTrackerText
+  - LevelText
   layers:
   - Default
   - TransparentFX

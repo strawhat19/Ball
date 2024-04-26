@@ -55,7 +55,7 @@ public class SceneFader : MonoBehaviour {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
         bool levelNotInBuildSettings = nextSceneIndex >= SceneManager.sceneCountInBuildSettings;
-        if (levelNotInBuildSettings) nextSceneIndex = currentSceneIndex;
+        if (levelNotInBuildSettings) nextSceneIndex = 0;
         StartCoroutine(FadeAndLoadScene(FadeDirection.In, nextSceneIndex));
     }
 }

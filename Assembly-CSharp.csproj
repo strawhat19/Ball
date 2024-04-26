@@ -40,12 +40,17 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.4f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\DifficultySymbolSwitcher.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\Deaths.cs" />
      <Compile Include="Assets\Scripts\Health.cs" />
+     <Compile Include="Assets\Scripts\Global.cs" />
      <Compile Include="Assets\Scripts\Spawner.cs" />
+     <Compile Include="Assets\Scripts\EnemiesTracker.cs" />
+     <Compile Include="Assets\Scripts\DifficultyTracker.cs" />
      <Compile Include="Assets\Scripts\ColorChange.cs" />
      <Compile Include="Assets\Scripts\SceneFader.cs" />
+     <Compile Include="Assets\Scripts\LevelText.cs" />
      <Compile Include="Assets\Scripts\DamageTracker.cs" />
      <Compile Include="Assets\Scripts\HealingTracker.cs" />
      <Compile Include="Assets\Scripts\SimpleMovement.cs" />
