@@ -23,6 +23,8 @@ TagManager:
   - DifficultyTracker
   - DifficultyTrackerText
   - LevelText
+  - CharSpikesBig
+  - CharSpikesSmall
   layers:
   - Default
   - TransparentFX
