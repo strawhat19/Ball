@@ -41,10 +41,6 @@ public class Health : MonoBehaviour {
         StartCoroutine(SmoothTransitionToNewHealth(currentHealth - damage, true));
     }
 
-    // void Update() {
-        // SimulateDamage();
-    // }
-
     IEnumerator SmoothTransitionToNewHealth(float newHealth, bool damage) {
         float timeToChange = 0.5f; // The duration of the change
         float elapsed = 0f;

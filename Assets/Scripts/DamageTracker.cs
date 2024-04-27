@@ -8,11 +8,8 @@ public class DamageTracker : MonoBehaviour {
     public static float damage = 0;
     public TextMeshProUGUI damageText;
 
-    void Start() {
-
-    }
-
     void Update() {
+        GlobalData.Damage = damage;
         string updatedDamage = GlobalData.RemoveDotZeroZero(damage.ToString("F2"));
         damageText.text = $"Damage: {updatedDamage}%";
     }

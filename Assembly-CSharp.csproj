@@ -42,10 +42,12 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\DifficultySymbolSwitcher.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
+     <Compile Include="Assets\Scripts\ScoreTracker.cs" />
      <Compile Include="Assets\Scripts\Deaths.cs" />
      <Compile Include="Assets\Scripts\Health.cs" />
      <Compile Include="Assets\Scripts\Global.cs" />
      <Compile Include="Assets\Scripts\Spawner.cs" />
+     <Compile Include="Assets\Scripts\LevelIconSwitch.cs" />
      <Compile Include="Assets\Scripts\EnemiesTracker.cs" />
      <Compile Include="Assets\Scripts\DifficultyTracker.cs" />
      <Compile Include="Assets\Scripts\ColorChange.cs" />

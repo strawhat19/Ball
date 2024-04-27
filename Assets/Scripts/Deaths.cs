@@ -7,13 +7,9 @@ using UnityEngine.SceneManagement;
 public class Deaths : MonoBehaviour {
     public static int deaths = 0;
     public TextMeshProUGUI deathsText;
-    // Start is called before the first frame update
-    void Start() {
-        
-    }
 
-    // Update is called once per frame
     void Update() {
+        GlobalData.Deaths = deaths;
         deathsText.text = $"Deaths: {deaths}";
     }
 

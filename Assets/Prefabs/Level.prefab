@@ -195,6 +195,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8913608610229195146}
+  - component: {fileID: 8441862946777991642}
   - component: {fileID: 8030456958208700604}
   - component: {fileID: 2700573030344926662}
   m_Layer: 5
@@ -224,6 +225,21 @@ RectTransform:
   m_AnchoredPosition: {x: -0.00012207031, y: -0.000030517578}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8441862946777991642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8361322538549828067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81d3469c8414b534bafe5864c1077f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level1Sprite: {fileID: 21300000, guid: e8a76a92d388cce49a8d3fe181137ebe, type: 3}
+  level2Sprite: {fileID: 21300000, guid: d5d9cfbe8135e574984ab563df58a7a0, type: 3}
+  level3Sprite: {fileID: 21300000, guid: c33698e745535354bb1e15ba39b4412c, type: 3}
 --- !u!222 &8030456958208700604
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -252,7 +268,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 276cbf4a06bd7de438733858bda5762b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e8a76a92d388cce49a8d3fe181137ebe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

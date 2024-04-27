@@ -8,11 +8,8 @@ public class EnemiesTracker : MonoBehaviour {
     public static int enemies = 0;
     public TextMeshProUGUI enemiesText;
 
-    void Start() {
-
-    }
-
     void Update() {
+        GlobalData.Enemies = enemies;
         enemiesText.text = $"Enemies: {enemies}";
     }
 

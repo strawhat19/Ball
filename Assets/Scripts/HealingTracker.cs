@@ -8,11 +8,8 @@ public class HealingTracker : MonoBehaviour {
     public static float healing = 0;
     public TextMeshProUGUI healingText;
 
-    void Start() {
-
-    }
-
     void Update() {
+        GlobalData.Healing = healing;
         string updatedHealing = GlobalData.RemoveDotZeroZero(healing.ToString("F2"));
         healingText.text = $"Healing: {updatedHealing}%";
     }

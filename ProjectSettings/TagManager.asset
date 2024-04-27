@@ -25,6 +25,7 @@ TagManager:
   - LevelText
   - CharSpikesBig
   - CharSpikesSmall
+  - ScoreText
   layers:
   - Default
   - TransparentFX

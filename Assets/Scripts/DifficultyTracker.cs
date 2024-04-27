@@ -20,6 +20,7 @@ public class DifficultyTracker : MonoBehaviour {
     }
 
     void Update() {
+        GlobalData.Difficulty = difficulty;
         difficultyText.text = $"Difficulty: {difficulty}";
     }
 

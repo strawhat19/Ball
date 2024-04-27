@@ -27,12 +27,29 @@ public class Movement : MonoBehaviour {
     public float spawnDelayDuration = -0.75f;
     public Difficulties difficulty = Difficulties.Easy;
     public static readonly string SpawnDelay = "SpawnDelay";
+    public static readonly string LevelMultiplier = "LevelMultiplier";
     public static readonly string DamageMultiplier = "DamageMultiplier";
+    public static readonly string DifficultyMultiplier = "DifficultyMultiplier";
 
     public Dictionary<Difficulties, Dictionary<string, float>> GameModes = new Dictionary<Difficulties, Dictionary<string, float>> {
-        { Difficulties.Easy, new Dictionary<string, float> { { DamageMultiplier, 1.0f }, { SpawnDelay, 1.25f } } },
-        { Difficulties.Medium, new Dictionary<string, float> { { DamageMultiplier, 1.5f }, { SpawnDelay, 0.75f } } },
-        { Difficulties.Hard, new Dictionary<string, float> { { DamageMultiplier, 2.0f }, { SpawnDelay, 0.0f } } },
+        { Difficulties.Easy, new Dictionary<string, float> {
+            { SpawnDelay, 1.25f }, 
+            { LevelMultiplier, 1.0f }, 
+            { DamageMultiplier, 1.0f }, 
+            { DifficultyMultiplier, 1.0f },
+        }},
+        { Difficulties.Medium, new Dictionary<string, float> { 
+            { SpawnDelay, 0.75f }, 
+            { LevelMultiplier, 1.2f }, 
+            { DamageMultiplier, 1.5f }, 
+            { DifficultyMultiplier, 1.5f } 
+        }},
+        { Difficulties.Hard, new Dictionary<string, float> { 
+            { SpawnDelay, 0.0f }, 
+            { LevelMultiplier, 1.5f }, 
+            { DamageMultiplier, 2.0f }, 
+            { DifficultyMultiplier, 2.0f } 
+        }},
     };
 
     void OnCollisionStay() {
@@ -60,6 +77,8 @@ public class Movement : MonoBehaviour {
     void Start() {
         rb = GetComponent<Rigidbody>();
         spawnDelayDuration = GameModes[difficulty][SpawnDelay];
+        GlobalData.LevelMultiplier = (float)GameModes[difficulty][LevelMultiplier];
+        GlobalData.DifficultyMultiplier = (float)GameModes[difficulty][DifficultyMultiplier];
 
         GameObject health = GameObject.FindGameObjectWithTag("Health");
         if (health != null) playerHealth = health.GetComponent<Health>();

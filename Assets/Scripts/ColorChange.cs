@@ -11,8 +11,7 @@ public class ColorChange : MonoBehaviour {
 
     public void ChangeColor(Color color) {
         Renderer renderer = GetComponent<Renderer>(); // Get the Renderer component of the GameObject
-        if (renderer != null)
-        {
+        if (renderer != null) {
             renderer.material.color = color; // Set the material color
         }
     }
