@@ -59,7 +59,7 @@ MonoBehaviour:
   damageMinimum: 5
   damageMaximum: 15
   spawnDelayDuration: -0.75
-  difficulty: 1
+  difficulty: 3
 --- !u!33 &5966907249053457065
 MeshFilter:
   m_ObjectHideFlags: 0
