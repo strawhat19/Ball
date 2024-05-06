@@ -25,6 +25,7 @@ public class ScoreTracker : MonoBehaviour {
         float healing = GlobalData.Healing; // ?? 300f * (GlobalData.Healing / (GlobalData.Healing + 100f));
 
         float calculatedScore = (((healing * 5) * (difficultyMultiplier * levelMultiplier)) - (((damage / 100) + enemies + deaths) / 100));
+        if (calculatedScore < score) return score;
         score = calculatedScore;
         GlobalData.Score = score;
         return score;

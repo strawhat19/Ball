@@ -57,6 +57,7 @@ public class EnemySpawner : MonoBehaviour {
         }
     }
 
+    // Draw Trajectory Path by calculating launchForce
     void OnDrawGizmos() {
         if (portal != null) {
             Gizmos.color = Color.red;
